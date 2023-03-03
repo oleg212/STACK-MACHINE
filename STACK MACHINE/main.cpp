@@ -3,9 +3,6 @@
 #include "CPU.h"
 #include "stack.h"
 #include <string>
-
-//#include <map>
-
 #include "memory.h"
 
 using namespace std;

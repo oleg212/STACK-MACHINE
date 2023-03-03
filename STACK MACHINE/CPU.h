@@ -69,9 +69,9 @@ private:
 	}
 	void INT_SUB() {
 		if (!st.isempty()) {
-			int res =  st.pop_int();
+			int res =  -st.pop_int();
 			if (!st.isempty()) {
-				res -= st.pop_int();
+				res += st.pop_int();
 				st.push(res);
 			}
 			else { throw "ERROR: stack empty"; }
@@ -91,9 +91,9 @@ private:
 	}
 	void INT_DIV() {
 		if (!st.isempty()) {
-			int res = st.pop_int();
+			int div = st.pop_int();
 			if (!st.isempty()) {
-				res /= st.pop_int();
+				int res = st.pop_int()/div;
 				st.push(res);
 			}
 			else { throw "ERROR: stack empty"; }
@@ -163,6 +163,18 @@ private:
 		}
 		else { throw "ERROR: stack empty"; }
 	}
+	void MOD() {
+		if (!st.isempty()) {
+			int res = st.pop_int();
+			if (!st.isempty()) {
+				res = st.pop_int() % res;
+				st.push(res);
+			}
+			else { throw "ERROR: stack empty"; }
+		}
+		else { throw "ERROR: stack empty"; }
+	}
+	
 
 
 	
@@ -183,6 +195,7 @@ private:
 		if (a == "CG") { return 14; }
 		if (a == "CLE") { return 15; }
 		if (a == "CGE") { return 16; }
+		if (a == "MOD") { return 17; }
 
 	}
 public:
@@ -214,12 +227,13 @@ public:
 			case 8: OR(); break;
 			case 9: AND(); break;
 			case 10: NOT(); break;
-			case 11: if (st.pop_int()==1) counter = atoi(arg.c_str()); break;
+			case 11: if (st.pop_int()==1) counter = atoi(arg.c_str())-1; break;
 			case 12: EQ(); break;
 			case 13: CL(); break;
 			case 14: CG(); break;
 			case 15: CLE(); break;
 			case 16: CGE(); break;
+			case 17: MOD(); break;
 		}
 		savemem();
 		
@@ -231,7 +245,9 @@ public:
 		int scripti = 0;
 		while (stream) {
 			getline(stream,temp );
-			script[scripti]=(temp);
+			if (temp.find("#") > 0) {
+				script[scripti] = temp.substr(0, temp.find("#"));
+			}else script[scripti]=(temp);
 			scripti++;
 		}
 		int abs = 0;
